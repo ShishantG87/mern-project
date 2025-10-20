@@ -12,7 +12,7 @@ import NotFound from "./components/NotFound"
 import {useEffect, useState} from "react";
 import axios from 'axios';
 
-
+const BACKEND_URL = "https://mern-project-dut6.onrender.com/"
 function App() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
@@ -23,7 +23,7 @@ console.log(user);
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const res = await axios .get('/api/users/me', {
+          const res = await axios .get(`${BACKEND_URL}/users/me`, {
           headers: {Authorization: `Bearer ${token}`},
           })
           setUser(res.data);
