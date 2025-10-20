@@ -8,12 +8,11 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-
-
 const app = express();
 
+// CORS middleware
 app.use(cors({
-    origin: "https://mern-project-frontend-9djz.onrender.com",
+    origin: "https://mern-project-frontend-9djz.onrender.com", // remove trailing slash
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
@@ -21,12 +20,13 @@ app.use(cors({
 
 app.use(express.json());
 
-
-
+// Routes
 app.use("/api/users", authRoutes);
 
+// Connect database
 connectDB();
 
+// Start server
 app.listen(PORT, () => {
     console.log(`Server started at port ${PORT}`)
-})
+});
