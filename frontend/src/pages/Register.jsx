@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate} from "react-router-dom";
 
+const BACKEND_URL = "https://mern-project-dut6.onrender.com/api"
+
 const Register = ({ setUser }) => {
   const [formData, setFormData] = useState({
     username: "",
@@ -19,7 +21,7 @@ const Register = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/users/register", formData);
+      const res = await axios.post(`${BACKEND_URL}/users/me`, formData);
       localStorage.setItem("token", res.data.token);
       console.log(res.data)
       setUser(res.data);
