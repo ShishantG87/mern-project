@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate} from "react-router-dom";
 
+
+const BACKEND_URL = "https://mern-project-dut6.onrender.com/api"
+
 const Login = ({ setUser }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -18,7 +21,7 @@ const Login = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/users/login", formData);
+      const res = await axios.post(`${BACKEND_URL}/users/me`, formData);
       localStorage.setItem("token", res.data.token);
       console.log(res.data)
       setUser(res.data);
