@@ -12,7 +12,7 @@ const app = express();
 
 // CORS middleware
 app.use(cors({
-    origin: "https://mern-project-frontend-9djz.onrender.com", // remove trailing slash
+    origin: "https://mern-project-frontend-9djz.onrender.com", 
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
