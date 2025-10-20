@@ -25,6 +25,7 @@ console.log(user);
   useEffect(() =>{
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
+      console.log("Token from localStorage:", token)
       if (token) {
         try {
           const res = await axios .get(`${BACKEND_URL}/users/me`, {
