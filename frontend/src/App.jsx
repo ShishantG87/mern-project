@@ -5,62 +5,58 @@ import {
   Navigate,
 } from 'react-router-dom';   
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home"
-import Login from "./pages/Login"
-import Register from "./pages/Register"
-import NotFound from "./components/NotFound"
-import {useEffect, useState} from "react";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import NotFound from "./components/NotFound";
+import { useEffect, useState } from "react";
 import axios from 'axios';
 
-
-
-const BACKEND_URL = "https://mern-project-dut6.onrender.com/api"
-
+const BACKEND_URL = "https://mern-project-dut6.onrender.com/api";
 
 function App() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-console.log(user);
-  useEffect(() =>{
+
+  useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
-      console.log("Token from localStorage:", token)
-      if (token) {
-        try {
-          const res = await axios .get(`${BACKEND_URL}/users/me`, {
-          headers: {Authorization: `Bearer ${token}`},
-          })
-          setUser(res.data);
-        } catch (err) {
-          setError("Failed to fetch user data");
-          localStorage.removeItem("token");
-        }
+      if (!token) {
+        setIsLoading(false);
+        return;
+      }
+      try {
+        const res = await axios.get(`${BACKEND_URL}/users/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUser(res.data);
+      } catch (err) {
+        setError("Failed to fetch user data");
+        localStorage.removeItem("token");
       }
       setIsLoading(false);
     };
+
     fetchUser();
   }, []);
 
-  if (isLoading ) {
+  if (isLoading) {
     return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <div className='text-xl text-white'>
-          Loading...
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className='text-xl text-white'>Loading...</div>
       </div>
-    </div>
-    );}
+    );
+  }
 
   return (
     <Router>
       <Navbar user={user} setUser={setUser}/>
       <Routes>
         <Route path="/" element={<Home user={user} error={error} />} />
-
-        <Route path="/login" element= {user ? <Navigate to="/"/> :  <Login setUser={setUser}/>} />
-
-        <Route path="/register" element={user ? <Navigate to="/"/> : <Register setUser={setUser} />} />
-        <Route  path="*" element={<NotFound />}/> 
+        <Route path="/login" element={user ? <Navigate to="/" /> : <Login setUser={setUser} />} />
+        <Route path="/register" element={user ? <Navigate to="/" /> : <Register setUser={setUser} />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
