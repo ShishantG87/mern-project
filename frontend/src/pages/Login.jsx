@@ -21,7 +21,7 @@ const Login = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${BACKEND_URL}/users/me`, formData);
+      const res = await axios.post(`${BACKEND_URL}/users/login`, formData);
       localStorage.setItem("token", res.data.token);
       console.log(res.data)
       setUser(res.data);
