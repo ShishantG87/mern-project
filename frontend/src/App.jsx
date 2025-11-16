@@ -11,7 +11,8 @@ import Register from "./pages/Register"
 import NotFound from "./components/NotFound"
 import {useEffect, useState} from "react";
 import axios from 'axios';
-
+import Delete from "./pages/Delete";
+import Update from "./pages/Update";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -23,13 +24,14 @@ console.log(user);
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const res = await axios .get('/api/users/me', {
+          const res = await axios.get('/api/users/me', {
           headers: {Authorization: `Bearer ${token}`},
           })
           setUser(res.data);
         } catch (err) {
           setError("Failed to fetch user data");
           localStorage.removeItem("token");
+          setUser(null);
         }
       }
       setIsLoading(false);
@@ -55,6 +57,8 @@ console.log(user);
         <Route path="/login" element= {user ? <Navigate to="/"/> :  <Login setUser={setUser}/>} />
 
         <Route path="/register" element={user ? <Navigate to="/"/> : <Register setUser={setUser} />} />
+        <Route path="/delete-account" element={<Delete setUser={setUser} />} />
+        <Route path="/update-account" element={<Update setUser={setUser} />}/>
         <Route  path="*" element={<NotFound />}/> 
       </Routes>
     </Router>
