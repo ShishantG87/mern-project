@@ -12,6 +12,10 @@ export const protect = async (req, res, next) => {
 
                 req.user = await User.findById(decoded.id).select("-password");
 
+                if (!req.user) {
+                    return res.status(401).json({ message: "User no longer exists." });
+                }
+
                 return next();
             } catch (err) {
                 console.error("Token verification failed: ", err.message);

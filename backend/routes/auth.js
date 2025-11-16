@@ -67,6 +67,47 @@ router.post('/login', async (req, res) => {
 })
 
 
+router.put("/", protect, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) return res.status(401).json({message: "User not found"});
+        
+
+        if (req.body.email && req.body.email != user.email){ 
+            const emailExists = await User.findOne({email: req.body.email});
+            if (emailExists) {
+                return res.status(400).json({message: "Email already in use"});
+            }
+            user.email = req.body.email;
+        }
+        if (req.body.username) user.username = req.body.username;
+        if (req.body.password) user.password = req.body.password;  
+        
+        const updated = await user.save();
+        res.status(200).json({
+            _id: updated._id,
+            username: updated.username,
+            email: updated.email,
+        });
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+})
+
+router.delete("/", protect, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) return res.status(401).json({message: "User not found"});
+
+        await user.deleteOne();
+
+        res.status(200).json({message: "User deleted"});
+
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
+
 // Me 
 router.get("/me", protect, async (req, res) => {
     res.status(200).json(req.user);
