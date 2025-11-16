@@ -15,6 +15,7 @@ import Delete from "./pages/Delete";
 import Update from "./pages/Update";
 
 function App() {
+  axios.defaults.baseURL = "https://mern-project-dut6.onrender.com/";
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -53,9 +54,7 @@ console.log(user);
       <Navbar user={user} setUser={setUser}/>
       <Routes>
         <Route path="/" element={<Home user={user} error={error} />} />
-
         <Route path="/login" element= {user ? <Navigate to="/"/> :  <Login setUser={setUser}/>} />
-
         <Route path="/register" element={user ? <Navigate to="/"/> : <Register setUser={setUser} />} />
         <Route path="/delete-account" element={<Delete setUser={setUser} />} />
         <Route path="/update-account" element={<Update setUser={setUser} />}/>
@@ -64,5 +63,5 @@ console.log(user);
     </Router>
   );
 }
-
+ 
 export default App;
